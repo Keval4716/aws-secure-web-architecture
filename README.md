@@ -17,17 +17,17 @@ A robust cloud infrastructure project demonstrating how to architect a custom ne
 ### 1. Secure Asset Storage & Access Control
 We initialized a centralized Amazon S3 bucket to store web components securely, paired with a custom IAM Instance Profile role to allow the web server to access it automatically.
 <p align="center">
-  <img src="screenshots/1-S3-Bucket.jpg" width="45%" />
-  <img src="screenshots/2-IAM-Role.jpg" width="45%" />
+  <img src="1-S3-Bucket.jpg.png" width="45%" />
+  <img src="2-IAM-Role.jpg.png" width="45%" />
 </p>
 
 ---
 
 ### 2. Custom Network Topology & Compute Provisioning
- A complete Virtual Private Cloud (VPC) was constructed from scratch, routing traffic clearly through a public gateway. An EC2 computing host was then targeted and deployed into the public zone.
+A complete Virtual Private Cloud (VPC) was constructed from scratch, routing traffic clearly through a public gateway. An EC2 computing host was then targeted and deployed into the public zone.
 <p align="center">
-  <img src="screenshots/3-Custom-VPC.jpg" width="45%" />
-  <img src="screenshots/4-Running-EC2.jpg" width="45%" />
+  <img src="3-Custom-VPC.jpg.png" width="45%" />
+  <img src="4-Running-EC2.jpg.png" width="45%" />
 </p>
 
 ---
@@ -35,8 +35,8 @@ We initialized a centralized Amazon S3 bucket to store web components securely, 
 ### 3. Server Configuration & Production Launch
 We accessed the infrastructure via an SSH terminal shell to initialize the web engine, seamlessly pull our `index.html` layout along with high-res assets down via the S3 pipeline, and bring the live site completely online.
 <p align="center">
-  <img src="screenshots/5-S3-Copy-Success.jpg" width="45%" />
-  <img src="screenshots/6-Webpage-Complete.jpg" width="45%" />
+  <img src="5-S3-Copy-Success.jpg.png" width="45%" />
+  <img src="6-Webpage-Complete.jpg.png" width="45%" />
 </p>
 
 ---
