@@ -1,27 +1,56 @@
-# AWS Secure Web Hosting Architecture
+# Secure AWS Web Application Deployment Pipeline
 
-## Project Overview
-This project demonstrates how to deploy a secure web infrastructure on AWS using foundational cloud services. It is designed to host a website while maintaining strict network isolation and security controls.
+A robust cloud infrastructure project demonstrating how to architect a custom network and securely deploy a public-facing web application on an Amazon EC2 instance. The architecture enforces security best practices by using an IAM instance profile to dynamically retrieve web assets from Amazon S3 without embedding hardcoded credentials.
 
-## Services Used
-* **Amazon VPC:** Custom network isolation with Public and Private subnets.
-* **Amazon EC2:** Linux-based virtual server configured as an Apache web server.
-* **Amazon S3:** Private storage bucket hosting static web application assets.
-* **AWS IAM:** Secure instance profiles ensuring credential-less service access.
+---
 
-## Architecture & Implementation Steps
+## 🛠️ Key Architectural Features Built
+* **Custom VPC Architecture:** Isolated virtual network featuring public and private subnets, customized route tables, and an attached Internet Gateway for structured ingress/egress.
+* **IAM Least Privilege Access:** Avoided insecure credential storage by creating a dedicated IAM service role (`EC2-S3-Read-Role`) allowing read-only access to specific S3 assets.
+* **Secured Web Tier (Apache):** Provisioned an EC2 host running Amazon Linux 2023, bootstrapped with an Apache HTTP web server configured to serve custom code.
+* **Dynamic Content Syncing:** Utilized the AWS CLI seamlessly within the host environment to pull live assets down from a secure S3 bucket directly into production.
 
-### 1. Network Isolation (VPC)
-I built a custom VPC with a dedicated Public Subnet for the web traffic and a Private Subnet for secure backend assets. 
-* *Insert VPC Screenshot below:*
-![VPC Configuration](vpc.png)
+---
 
-### 2. Linux Server & Web Configuration
-Launched an Amazon Linux EC2 instance. Connected via SSH, updated the package manager, installed Apache, and successfully verified that the server could process HTTP traffic.
-* *Insert Terminal/Webpage Screenshot below:*
-![Live Web Server](linux.png)
+## 📸 Step-by-Step Implementation Evidence
 
-### 3. Security Hardening (IAM & Security Groups)
-Configured inbound Security Group rules to strictly restrict traffic (allowing HTTP port 80 globally and locking down SSH port 22). Attached an IAM role to the instance profile to securely pull deployment assets directly from a private S3 bucket.
-* *Insert IAM/Security Group Screenshot below:*
-![Security Groups](security.png)
+### 1. Secure Asset Storage & Access Control
+We initialized a centralized Amazon S3 bucket to store web components securely, paired with a custom IAM Instance Profile role to allow the web server to access it automatically.
+<p align="center">
+  <img src="1-S3-Bucket.jpg" width="45%" />
+  <img src="2-IAM-Role.jpg" width="45%" />
+</p>
+
+---
+
+### 2. Custom Network Topology & Compute Provisioning
+A complete Virtual Private Cloud (VPC) was constructed from scratch, map routing traffic clearly through a public gateway. An EC2 computing host was then targeted and deployed into the public zone.
+<p align="center">
+  <img src="3-Custom-VPC.jpg" width="45%" />
+  <img src="4-Running-EC2.jpg" width="45%" />
+</p>
+
+---
+
+### 3. Server Configuration & Production Launch
+We accessed the infrastructure via an SSH terminal shell to initialize the web engine, seamlessly pull our `index.html` layout along with high-res assets down via the S3 pipeline, and bring the live site completely online.
+<p align="center">
+  <img src="5-S3-Copy-Success.jpg" width="45%" />
+  <img src="6-Webpage-Complete.jpg" width="45%" />
+</p>
+
+---
+
+## 🚀 Terminal Deployment Commands Used
+```bash
+# 1. Elevate privileges and install Apache Web Engine
+sudo dnf install -y httpd
+
+# 2. Activate the service and ensure persistence across host reboots
+sudo systemctl start httpd
+sudo systemctl enable httpd
+
+# 3. Securely synchronize production assets down from S3 Bucket
+sudo aws s3 cp s3://keval-s3-demo-bucket/index.html /var/www/html/index.html
+sudo aws s3 cp s3://keval-s3-demo-bucket/jeams\ lee.webp /var/www/html/jeams\ lee.webp
+sudo aws s3 cp s3://keval-s3-demo-bucket/kite.webp /var/www/html/kite.webp
